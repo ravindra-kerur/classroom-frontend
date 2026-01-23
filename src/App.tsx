@@ -1,5 +1,5 @@
 import { Refine } from "@refinedev/core";
-import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
+import { DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import routerProvider, {
@@ -67,7 +67,7 @@ function App() {
               <UnsavedChangesNotifier />
               <DocumentTitleHandler />
             </Refine>
-            <DevtoolsPanel />
+            {/* <DevtoolsPanel /> */}
           </DevtoolsProvider>
         </ThemeProvider>
       </RefineKbarProvider>
@@ -78,3 +78,6 @@ function App() {
 export default App;
 
 // https://www.youtube.com/watch?v=ek7hmv5PVV8
+// https://tweakcn.com/
+
+// https://www.youtube.com/watch?v=D8QhXb_uakQ
