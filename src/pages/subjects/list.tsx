@@ -34,7 +34,7 @@ const SubjectsList = () => {
         ];
 
   const searchFilter = searchQuery
-    ? [{ field: "name", operator: "contains" as const, value: { searchQuery } }]
+    ? [{ field: "name", operator: "contains" as const, value: searchQuery }]
     : [];
 
   const subjectTable = useTable<Subject>({
@@ -57,7 +57,7 @@ const SubjectsList = () => {
         },
         {
           id: "department",
-          accessorKey: "department",
+          accessorKey: "department.name",
           size: 150,
           header: () => <p className="column-title">Department</p>,
           cell: ({ getValue }) => (
