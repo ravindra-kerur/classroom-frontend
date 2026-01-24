@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { classSchema } from "@/lib/schema";
 import { useBack } from "@refinedev/core";
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
+import { useForm } from "@refinedev/react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -151,9 +152,8 @@ const Create = () => {
                                 }
                               : null
                           }
-                          onChange={(file: unknown, field: unknown) =>
-                            setBannerImage(file, field)
-                          }
+                          onChange={(file) => setBannerImage(file, field)}
+                          disabled={false}
                         />
                       </FormControl>
                       <FormMessage />
@@ -199,7 +199,7 @@ const Create = () => {
                           onValueChange={(value) =>
                             field.onChange(Number(value))
                           }
-                          value={field?.value?.toSting}
+                          value={field?.value?.toSting()}
                         >
                           <FormControl>
                             <SelectTrigger className="w-full">
@@ -235,7 +235,7 @@ const Create = () => {
                           onValueChange={(value) =>
                             field.onChange(Number(value))
                           }
-                          value={field?.value?.toSting}
+                          value={field?.value?.toSting()}
                         >
                           <FormControl>
                             <SelectTrigger className="w-full">
@@ -332,8 +332,13 @@ const Create = () => {
 
                 <Separator />
 
-                <Button type="submit" size="lg" className="w-full">
-                  Save Subject
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  + {isSubmitting ? "Creating..." : "Create Class"}+{" "}
                 </Button>
               </form>
             </Form>

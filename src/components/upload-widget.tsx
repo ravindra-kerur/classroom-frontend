@@ -3,7 +3,21 @@ import { UploadWidgetValue } from "@/types";
 import { UploadCloud } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-function UploadWidget({ value, onChange, disabled = false }) {
+interface CloudinaryWidget {
+  open: () => void;
+}
+
+interface UploadWidgetProps {
+  value: UploadWidgetValue | null;
+  onChange: (payload: UploadWidgetValue | null) => void;
+  disabled: boolean;
+}
+
+function UploadWidget({
+  value,
+  onChange,
+  disabled = false,
+}: UploadWidgetProps) {
   const widgetRef = useRef<CloudinaryWidget | null>(null);
   const onChangeRef = useRef(onChange);
 
@@ -33,7 +47,11 @@ function UploadWidget({ value, onChange, disabled = false }) {
           clientAllowedFormats: ["png", "jpg", "jpeg", "webp"],
         },
         (error, result) => {
-          if (!error && result.event === "success") {
+          if (error) {
+            console.error("Cloudinary upload error:", error);
+            return;
+          }
+          if (result.event === "success") {
             const payload: UploadWidgetValue = {
               url: result.info.secure_url,
               publicId: result.info.public_id,
@@ -49,9 +67,17 @@ function UploadWidget({ value, onChange, disabled = false }) {
 
     if (intializeWidget()) return;
 
+    let attempts = 0;
+    const maxAttempts = 20;
     const intervalId = window.setInterval(() => {
       if (intializeWidget()) {
-        window.clearInterval(intervalId);
+        attempts++;
+        if (intializeWidget() || attempts >= maxAttempts) {
+          window.clearInterval(intervalId);
+          if (attempts >= maxAttempts && !widgetRef.current) {
+            console.error("Failed to initialize Cloudinary widget");
+          }
+        }
       }
     }, 500);
 
